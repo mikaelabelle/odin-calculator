@@ -1,6 +1,7 @@
 let inputs = document.querySelectorAll(".input")
 let screen = document.querySelector(".screen")
 let equals = document.querySelector(".equals")
+let backspace = document.querySelector(".backspace")
 
 function add(a, b) {
     return a + b
@@ -41,19 +42,27 @@ let firstNum = []
 let secondNum = []
 let operation
 let result
+let currentDisNum
 let operations = ["plus", "minus", "multiply", "divide"]
-
-// TODO: problem when pressing second Num twice
 
 
 function updateFirstNum(keyPressed) {
     let input = keyPressed.textContent
+
+    if (input === "." && firstNum.includes(".")) {
+        return
+    }
+
     firstNum.push(input)
     screen.textContent = firstNum.join("")
 }
 
 function updateSecondNum(keyPressed) {
     let input = keyPressed.textContent
+
+    if (input === "." && secondNum.includes(".")) {
+        return
+    }
     secondNum.push(input)
     screen.textContent = secondNum.join("")
 }
@@ -74,7 +83,24 @@ function operationSelected(keyPressed) {
 }
 
 function getResult(firstNum, secondNum, operation) {
-    return operate(Number(firstNum.join("")), operation, Number(secondNum.join("")))
+    if (firstNum == "0" && secondNum == "0") {
+        return "ȩ̷͒̕ṟ̴͖̆r̴̞̻̀ô̷͈̐r̴̢͚̿"
+    }
+
+    let longNum = operate(Number(firstNum.join("")), operation, Number(secondNum.join("")))
+    return Math.round(longNum * 1000000000) / 1000000000
+}
+
+function backspaceNum(display) {
+    if (display === "first") {
+        firstNum.pop()
+        screen.textContent = firstNum.join("")
+    }
+
+    if (display === "second") {
+        secondNum.pop()
+        screen.textContent = secondNum.join("")
+    }
 }
 
 inputs.forEach(button => {
@@ -83,31 +109,38 @@ inputs.forEach(button => {
             clearDisplay()
         }
         else if (operations.includes(button.id)) {
-            if (firstNum.length != 0 && secondNum.length != 0) {
+            if (firstNum.length != 0 && secondNum.length != 0 && result) {
+                firstNum = [result]
+                result = null
+                screen.textContent = ""
+            }
+            else if (firstNum.length != 0 && secondNum.length != 0) {
                 result = getResult(firstNum, secondNum, operation)
                 screen.textContent = result
                 firstNum = [result]
-
+                result = null
             }
 
             operationSelected(button)
             secondNum = []
 
         }
-        else if (!operation && firstNum.length === 0) {
+        else if (button.classList.contains("number") && !operation) {
             updateFirstNum(button)
+            currentDisNum = "first"
         }
-        else if (!operations.includes(button.id)) {
+        else if (button.classList.contains("number")) {
             updateSecondNum(button)
+            currentDisNum = "second"
         }
-        else {
-            result = getResult(firstNum, secondNum, operation)
-            firstNum = result
-            updateSecondNum(button)
-        }
+
         console.log({ operation, firstNum, secondNum, result })
     })
 });
+
+backspace.addEventListener("click", e => {
+    backspaceNum(currentDisNum)
+})
 
 equals.addEventListener("click", e => {
     result = getResult(firstNum, secondNum, operation)
