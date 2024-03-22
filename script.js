@@ -48,18 +48,15 @@ let operations = ["plus", "minus", "multiply", "divide"]
 
 function updateFirstNum(keyPressed) {
     let input = keyPressed.textContent
-
     if (input === "." && firstNum.includes(".")) {
         return
     }
-
     firstNum.push(input)
     screen.textContent = firstNum.join("")
 }
 
 function updateSecondNum(keyPressed) {
     let input = keyPressed.textContent
-
     if (input === "." && secondNum.includes(".")) {
         return
     }
@@ -83,7 +80,7 @@ function operationSelected(keyPressed) {
 }
 
 function getResult(firstNum, secondNum, operation) {
-    if (firstNum == "0" && secondNum == "0") {
+    if (firstNum == "0" && secondNum == "0" && operation === "divide") {
         return "ȩ̷͒̕ṟ̴͖̆r̴̞̻̀ô̷͈̐r̴̢͚̿"
     }
     currentDisNum = "result"
@@ -96,12 +93,10 @@ function backspaceNum(display) {
         firstNum.pop()
         screen.textContent = firstNum.join("")
     }
-
     if (display === "second") {
         secondNum.pop()
         screen.textContent = secondNum.join("")
     }
-
     if (display === "result") {
         return
     }
@@ -113,7 +108,7 @@ inputs.forEach(button => {
             clearDisplay()
         }
         else if (operations.includes(button.id)) {
-            if (firstNum.length != 0 && secondNum.length != 0 && result) {
+            if (result) {
                 firstNum = [result]
                 result = null
                 screen.textContent = ""
@@ -124,10 +119,8 @@ inputs.forEach(button => {
                 firstNum = [result]
                 result = null
             }
-
             operationSelected(button)
             secondNum = []
-
         }
         else if (button.classList.contains("number") && !operation) {
             updateFirstNum(button)
@@ -137,8 +130,6 @@ inputs.forEach(button => {
             updateSecondNum(button)
             currentDisNum = "second"
         }
-
-        console.log({ operation, firstNum, secondNum, result })
     })
 });
 
@@ -147,7 +138,12 @@ backspace.addEventListener("click", e => {
 })
 
 equals.addEventListener("click", e => {
+    if (firstNum.length < 1 && secondNum.length < 1) {
+        return
+    }
     result = getResult(firstNum, secondNum, operation)
     operation = null
+    firstNum = []
+    secondNum = []
     screen.textContent = result
 });
