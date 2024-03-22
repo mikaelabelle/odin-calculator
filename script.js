@@ -86,7 +86,7 @@ function getResult(firstNum, secondNum, operation) {
     if (firstNum == "0" && secondNum == "0") {
         return "ȩ̷͒̕ṟ̴͖̆r̴̞̻̀ô̷͈̐r̴̢͚̿"
     }
-
+    currentDisNum = "result"
     let longNum = operate(Number(firstNum.join("")), operation, Number(secondNum.join("")))
     return Math.round(longNum * 1000000000) / 1000000000
 }
@@ -100,6 +100,10 @@ function backspaceNum(display) {
     if (display === "second") {
         secondNum.pop()
         screen.textContent = secondNum.join("")
+    }
+
+    if (display === "result") {
+        return
     }
 }
 
