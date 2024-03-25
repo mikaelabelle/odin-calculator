@@ -51,6 +51,9 @@ function updateFirstNum(keyPressed) {
     if (input === "." && firstNum.includes(".")) {
         return
     }
+    if (firstNum.length > 10) {
+        return
+    }
     firstNum.push(input)
     screen.textContent = firstNum.join("")
 }
@@ -58,6 +61,9 @@ function updateFirstNum(keyPressed) {
 function updateSecondNum(keyPressed) {
     let input = keyPressed.textContent
     if (input === "." && secondNum.includes(".")) {
+        return
+    }
+    if (secondNum.length > 10) {
         return
     }
     secondNum.push(input)
@@ -85,7 +91,9 @@ function getResult(firstNum, secondNum, operation) {
     }
     currentDisNum = "result"
     let longNum = operate(Number(firstNum.join("")), operation, Number(secondNum.join("")))
-    return Math.round(longNum * 1000000000) / 1000000000
+    let longNumLength = Math.floor(longNum).toString().length
+    let roundFactor = 10 ** (11 - longNumLength)
+    return Math.round(longNum * roundFactor) / roundFactor
 }
 
 function backspaceNum(display) {
