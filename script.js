@@ -146,7 +146,7 @@ backspace.addEventListener("click", e => {
 })
 
 equals.addEventListener("click", e => {
-    if (firstNum.length < 1 && secondNum.length < 1) {
+    if (firstNum.length < 1 || secondNum.length < 1) {
         return
     }
     result = getResult(firstNum, secondNum, operation)
