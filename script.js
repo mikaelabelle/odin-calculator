@@ -131,13 +131,16 @@ inputs.forEach(button => {
             secondNum = []
         }
         else if (button.classList.contains("number") && !operation) {
+            result = null
             updateFirstNum(button)
             currentDisNum = "first"
         }
         else if (button.classList.contains("number")) {
+            result = null
             updateSecondNum(button)
             currentDisNum = "second"
         }
+        console.log({ firstNum, secondNum, result })
     })
 });
 
@@ -154,4 +157,5 @@ equals.addEventListener("click", e => {
     firstNum = []
     secondNum = []
     screen.textContent = result
+    console.log({ firstNum, secondNum, result })
 });
