@@ -140,7 +140,6 @@ inputs.forEach(button => {
             updateSecondNum(button)
             currentDisNum = "second"
         }
-        console.log({ firstNum, secondNum, result })
     })
 });
 
@@ -157,5 +156,4 @@ equals.addEventListener("click", e => {
     firstNum = []
     secondNum = []
     screen.textContent = result
-    console.log({ firstNum, secondNum, result })
 });
